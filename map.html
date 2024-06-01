@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     <style>
         #map {
             height: 600px;
@@ -40,14 +41,37 @@
             height: 32px;
             font-size: 32px;
         }
+        .options-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .options-button i {
+            font-size: 20px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <button class="options-button" onclick="openOptions()">
+        <i class="fas fa-wrench"></i>
+    </button>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="locations.js"></script>
     <script>
+        function openOptions() {
+            alert('Options button clicked!');
+            // Here you can add the code to open your options window or display options
+        }
+
         // Create the map and set the initial view to center on Japan
         var map = L.map('map').setView([36.2048, 138.2529], 5); // Centered on Japan with zoom level 5
 
@@ -62,18 +86,26 @@
             var label = L.divIcon({
                 className: 'label-div',
                 html: location.label,
-                iconAnchor: [50, 40] // Adjust the position of the label above and to the right of the marker
+                iconAnchor: [20, 50] // Adjust the position of the label above and to the right of the marker
             });
             L.marker(location.coords, { icon: label }).addTo(map);
         });
 
+        // Combine locations and invisible stops for routing
+        var waypoints = locations.map(loc => loc.coords).slice(0, 1)
+            .concat(invisibleStops.map(stop => stop.coords))
+            .concat(locations.map(loc => loc.coords).slice(1));
+
         // Add routing control
         L.Routing.control({
-            waypoints: locations.map(loc => L.latLng(loc.coords)),
+            waypoints: waypoints.map(loc => L.latLng(loc)),
             routeWhileDragging: false,
             addWaypoints: false,
             draggableWaypoints: false,
             createMarker: function(i, waypoint) {
+                if (invisibleStops.some(stop => stop.coords[0] === waypoint.latLng.lat && stop.coords[1] === waypoint.latLng.lng)) {
+                    return null; // Do not create marker for invisible stops
+                }
                 return L.marker(waypoint.latLng, {
                     icon: L.divIcon({
                         className: 'custom-div-icon'
