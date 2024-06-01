@@ -17,5 +17,5 @@ var landmarks = [
 
 // Define the invisible stops
 var invisibleStops = [
-    //{ coords: [36.0, 139.0] } // Example invisible stop between Tokyo and Nikko
+    { coords: [35.8586447, 139.9301584] } // Example invisible stop between Tokyo and Nikko
 ];
