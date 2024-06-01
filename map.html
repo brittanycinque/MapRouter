@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Japan Route Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        .custom-div-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            width: 32px;
+            height: 32px;
+        }
+        .custom-div-icon::before {
+            content: "📍";
+            font-size: 32px;
+        }
+        .label-div {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            padding: 2px 5px;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            font-size: 14px;
+            color: #FF69B4;
+        }
+        .emoji-div-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            width: 32px;
+            height: 32px;
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="locations.js"></script>
+    <script>
+        // Create the map and set the initial view to center on Japan
+        var map = L.map('map').setView([36.2048, 138.2529], 5); // Centered on Japan with zoom level 5
+
+        // Add a custom tile layer with simpler colors
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }).addTo(map);
+
+        // Add markers and labels to the map
+        locations.forEach(function(location) {
+            // Label
+            var label = L.divIcon({
+                className: 'label-div',
+                html: location.label,
+                iconAnchor: [50, 40] // Adjust the position of the label above and to the right of the marker
+            });
+            L.marker(location.coords, { icon: label }).addTo(map);
+        });
+
+        // Add routing control
+        L.Routing.control({
+            waypoints: locations.map(loc => L.latLng(loc.coords)),
+            routeWhileDragging: false,
+            addWaypoints: false,
+            draggableWaypoints: false,
+            createMarker: function(i, waypoint) {
+                return L.marker(waypoint.latLng, {
+                    icon: L.divIcon({
+                        className: 'custom-div-icon'
+                    })
+                });
+            },
+            lineOptions: {
+                styles: [{ color: '#FF69B4', weight: 4, dashArray: '10, 10' }] // Dashed line
+            },
+            show: false // Hide the navigation panel
+        }).addTo(map);
+
+        // Add landmarks without labels
+        landmarks.forEach(function(landmark) {
+            L.marker(landmark.coords, {
+                icon: L.divIcon({
+                    className: 'emoji-div-icon',
+                    html: landmark.emoji
+                })
+            }).addTo(map);
+        });
+
+    </script>
+</body>
+</html>
