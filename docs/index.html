@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Japan Route Map</title>
     <meta charset="utf-8" />
@@ -12,6 +13,7 @@
             height: 600px;
             width: 100%;
         }
+
         .custom-div-icon {
             display: flex;
             align-items: center;
@@ -20,10 +22,12 @@
             width: 32px;
             height: 32px;
         }
+
         .custom-div-icon::before {
             content: "📍";
             font-size: 32px;
         }
+
         .label-div {
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: 5px;
@@ -32,6 +36,7 @@
             font-size: 14px;
             color: #FF69B4;
         }
+
         .emoji-div-icon {
             display: flex;
             align-items: center;
@@ -41,37 +46,35 @@
             height: 32px;
             font-size: 32px;
         }
-        .options-button {
+
+        .custom-button {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 80px;
+            left: 10px;
             background-color: white;
             border: none;
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
-        .options-button i {
+
+        .custom-button i {
             font-size: 20px;
             color: #555;
         }
     </style>
 </head>
+
 <body>
     <div id="map"></div>
-    <button class="options-button" onclick="openOptions()">
-        <i class="fas fa-wrench"></i>
+    <button class="custom-button" onclick="customButtonClick()">
+        <i class="fas fa-info-circle"></i> Custom Button
     </button>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="locations.js"></script>
     <script>
-        function openOptions() {
-            alert('Options button clicked!');
-            // Here you can add the code to open your options window or display options
-        }
-
         // Create the map and set the initial view to center on Japan
         var map = L.map('map').setView([36.2048, 138.2529], 5); // Centered on Japan with zoom level 5
 
@@ -81,7 +84,7 @@
         }).addTo(map);
 
         // Add markers and labels to the map
-        locations.forEach(function(location) {
+        locations.forEach(function (location) {
             // Label
             var label = L.divIcon({
                 className: 'label-div',
@@ -102,7 +105,7 @@
             routeWhileDragging: false,
             addWaypoints: false,
             draggableWaypoints: false,
-            createMarker: function(i, waypoint) {
+            createMarker: function (i, waypoint) {
                 if (invisibleStops.some(stop => stop.coords[0] === waypoint.latLng.lat && stop.coords[1] === waypoint.latLng.lng)) {
                     return null; // Do not create marker for invisible stops
                 }
@@ -119,7 +122,7 @@
         }).addTo(map);
 
         // Add landmarks without labels
-        landmarks.forEach(function(landmark) {
+        landmarks.forEach(function (landmark) {
             L.marker(landmark.coords, {
                 icon: L.divIcon({
                     className: 'emoji-div-icon',
@@ -128,6 +131,12 @@
             }).addTo(map);
         });
 
+        // Custom button click handler
+        function customButtonClick() {
+            alert('Custom button clicked!');
+        }
+
     </script>
 </body>
+
 </html>
