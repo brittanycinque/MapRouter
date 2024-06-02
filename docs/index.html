@@ -12,47 +12,10 @@
 </head>
 
 <body>
-    <div id="map"></div>
-    <button class="custom-button" onclick="customButtonClick()">
-        🔧settings
-    </button>
-
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Set Destinations</h2> <!-- Add the title here -->
-            <div class="form-group">
-                <input type="text" id="field1_label" name="field1_label">
-                <input type="text" id="field1_lat" name="field1_lat">
-                <input type="text" id="field1_lng" name="field1_lng">
-            </div>
-            <div class="form-group">
-                <input type="text" id="field2_label" name="field2_label">
-                <input type="text" id="field2_lat" name="field2_lat">
-                <input type="text" id="field2_lng" name="field2_lng">
-            </div>
-            <div class="form-group">
-                <input type="text" id="field3_label" name="field3_label">
-                <input type="text" id="field3_lat" name="field3_lat">
-                <input type="text" id="field3_lng" name="field3_lng">
-            </div>
-            <div class="form-group">
-                <input type="text" id="field4_label" name="field4_label">
-                <input type="text" id="field4_lat" name="field4_lat">
-                <input type="text" id="field4_lng" name="field4_lng">
-            </div>
-            <div class="form-group">
-                <input type="text" id="field5_label" name="field5_label">
-                <input type="text" id="field5_lat" name="field5_lat">
-                <input type="text" id="field5_lng" name="field5_lng">
-            </div>
-            <div class="button-container">
-                <button onclick="closeModal()">OK</button>
-            </div>
-        </div>
+    <div id="map">
+        <div id="flag">🎌</div>
+        <div id="countdown"></div>
     </div>
-
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="locations.js"></script>

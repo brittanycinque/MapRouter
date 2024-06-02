@@ -3,19 +3,42 @@ var map = L.map('map', { zoomControl: false, zoomAnimation: false }).setView([36
 
 // Add a custom tile layer with simpler colors
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO'
 }).addTo(map);
 
-// Add markers and labels to the map
-locations.forEach(function (location) {
-    // Label
-    var label = L.divIcon({
-        className: 'label-div',
-        html: location.label,
-        iconAnchor: [50, 40] // Adjust the position of the label above and to the right of the marker
+// Add markers, labels, and tooltips to the map
+function addMarkersAndLabels() {
+    locations.forEach(function (location) {
+        var label = L.divIcon({
+            className: 'label-div',
+            html: location.label,
+            iconAnchor: [50, 40] // Adjust the position of the label above and to the right of the marker
+        });
+        var marker = L.marker(location.coords, { icon: label }).addTo(map);
+        marker.bindTooltip(`${location.label} - ${location.nights} days`, {
+            permanent: false,
+            direction: 'top',
+            className: 'custom-tooltip' // Add a custom class for further customization
+        });
     });
-    L.marker(location.coords, { icon: label }).addTo(map);
-});
+
+    // Add landmarks without labels but with tooltips
+    landmarks.forEach(function (landmark) {
+        var marker = L.marker(landmark.coords, {
+            icon: L.divIcon({
+                className: 'emoji-div-icon',
+                html: landmark.emoji
+            })
+        }).addTo(map);
+        marker.bindTooltip(`${landmark.nights} days`, {
+            permanent: false,
+            direction: 'top',
+            className: 'custom-tooltip' // Add a custom class for further customization
+        });
+    });
+}
+
+addMarkersAndLabels();
 
 // Combine locations and invisible stops for routing
 var waypoints = locations.map(loc => loc.coords).slice(0, 1)
@@ -44,32 +67,26 @@ L.Routing.control({
     show: false // Hide the navigation panel
 }).addTo(map);
 
-// Add landmarks without labels
-landmarks.forEach(function (landmark) {
-    L.marker(landmark.coords, {
-        icon: L.divIcon({
-            className: 'emoji-div-icon',
-            html: landmark.emoji
-        })
-    }).addTo(map);
-});
+// Adding the zoom control with empty text to hide the buttons
+L.control.zoom({ position: 'topright', zoomInText: '', zoomOutText: '' }).addTo(map);
 
-// Custom button click handler
-function customButtonClick() {
-    document.getElementById('modal').style.display = 'block';
+// Countdown Timer
+function updateCountdown() {
+    var targetDate = new Date('2024-10-18T00:00:00'); // Set your target date here
+    var now = new Date();
+    var timeDifference = targetDate - now;
 
-    // Prefill the form fields with location labels and coordinates
-    for (var i = 0; i < locations.length && i < 5; i++) {
-        document.getElementById('field' + (i + 1) + '_label').value = locations[i].label;
-        document.getElementById('field' + (i + 1) + '_lat').value = locations[i].coords[0];
-        document.getElementById('field' + (i + 1) + '_lng').value = locations[i].coords[1];
+    var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    document.getElementById('countdown').innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+    if (timeDifference < 0) {
+        document.getElementById('countdown').innerHTML = "EXPIRED";
     }
 }
 
-// Close the modal
-function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-}
-
-// Adding the zoom control with empty text to hide the buttons
-L.control.zoom({ position: 'topright', zoomInText: '', zoomOutText: '' }).addTo(map);
+// Update the countdown every second
+setInterval(updateCountdown, 1000);

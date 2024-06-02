@@ -1,6 +1,9 @@
 #map {
     height: 600px;
     width: 100%;
+    max-width: 60%; /* Adjust this value to your desired width */
+    margin: 0 auto; /* Center the map horizontally */
+    position: relative; /* Add this to position child elements relative to this container */
 }
 
 .custom-div-icon {
@@ -36,98 +39,38 @@
     font-size: 32px;
 }
 
-.custom-button {
-    position: absolute;
-    top: 80px;
-    left: 10px;
-    background-color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    z-index: 1000; /* Ensures it appears above other elements */
-}
-
-.custom-button i {
-    font-size: 20px;
-    color: #555;
-}
-
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 80%;
-    max-width: 600px; /* Adjusted to ensure fields fit within modal */
-    position: absolute;
-    top: 35%; /* Adjust this value to change the vertical position */
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centers the modal both horizontally and vertically based on the top position */
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.modal-content h2 {
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.form-group input[type="text"] {
-    width: 30%; /* Fixed width to ensure they fit within the modal */
-    margin-right: 10px;
-    box-sizing: border-box;
-}
-
-.form-group input[type="text"]:last-child {
-    margin-right: 0;
-}
-
-.button-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.modal button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+.leaflet-tooltip {
+    background-color: red; /* Make the background color red for visibility */
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border: 1px solid white;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 1000; /* Ensure tooltips are on top */
+}
+
+.leaflet-control-container .leaflet-control-zoom {
+    display: none !important;
+}
+
+.leaflet-control-container .leaflet-bar {
+    display: none !important;
+}
+
+#flag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 32px;
+    z-index: 1000; /* Ensure it stays on top of the map */
+}
+
+#countdown {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: red;
+    z-index: 1000; /* Ensure it stays on top of the map */
 }
