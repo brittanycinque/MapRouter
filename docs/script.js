@@ -6,7 +6,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO'
 }).addTo(map);
 
-// Add markers, labels, and tooltips to the map
+// Add markers, labels, and popups to the map
 function addMarkersAndLabels() {
     locations.forEach(function (location) {
         var label = L.divIcon({
@@ -15,26 +15,17 @@ function addMarkersAndLabels() {
             iconAnchor: [50, 40] // Adjust the position of the label above and to the right of the marker
         });
         var marker = L.marker(location.coords, { icon: label }).addTo(map);
-        marker.bindTooltip(`${location.label} - ${location.nights} days`, {
-            permanent: false,
-            direction: 'top',
-            className: 'custom-tooltip' // Add a custom class for further customization
-        });
+        marker.bindPopup(`<b>${location.label}</b><br>${location.nights} days`);
     });
 
-    // Add landmarks without labels but with tooltips
+    // Add landmarks without labels and popups
     landmarks.forEach(function (landmark) {
-        var marker = L.marker(landmark.coords, {
+        L.marker(landmark.coords, {
             icon: L.divIcon({
                 className: 'emoji-div-icon',
                 html: landmark.emoji
             })
         }).addTo(map);
-        marker.bindTooltip(`${landmark.nights} days`, {
-            permanent: false,
-            direction: 'top',
-            className: 'custom-tooltip' // Add a custom class for further customization
-        });
     });
 }
 

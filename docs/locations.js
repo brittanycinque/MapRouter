@@ -10,7 +10,7 @@ var locations = [
 
 // Define the landmarks with latitude, longitude, and emojis
 var landmarks = [
-    { coords: [35.3606, 138.7274], emoji: '🗻', nights: 2 } // Mt. Fuji (Hakone)
+    { coords: [35.3606, 138.7274], emoji: '🗻' } // Mt. Fuji (Hakone)
 ];
 
 // Define the invisible stops
