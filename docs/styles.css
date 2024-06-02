@@ -27,20 +27,33 @@
     background-color: transparent;
     width: 32px;
     height: 32px;
-}
-
-.custom-div-icon::before {
-    content: "📍";
     font-size: 32px;
 }
 
-.label-div {
+.emoji-div-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+}
+
+#text-display {
+    position: absolute;
+    pointer-events: none;
+    background-color: white;
+    padding: 5px;
     border-radius: 5px;
-    padding: 2px 5px;
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    font-size: 14px;
-    color: #FF69B4;
-    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it's on top */
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif;
+}
+
+.leaflet-popup-content-wrapper {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif;
 }
 
 .emoji-div-icon {
