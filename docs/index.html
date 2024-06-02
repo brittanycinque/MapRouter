@@ -8,135 +8,55 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    <style>
-        #map {
-            height: 600px;
-            width: 100%;
-        }
-
-        .custom-div-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: transparent;
-            width: 32px;
-            height: 32px;
-        }
-
-        .custom-div-icon::before {
-            content: "📍";
-            font-size: 32px;
-        }
-
-        .label-div {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 5px;
-            padding: 2px 5px;
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-            font-size: 14px;
-            color: #FF69B4;
-        }
-
-        .emoji-div-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: transparent;
-            width: 32px;
-            height: 32px;
-            font-size: 32px;
-        }
-
-        .custom-button {
-            position: absolute;
-            top: 80px;
-            left: 10px;
-            background-color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .custom-button i {
-            font-size: 20px;
-            color: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css" /> <!-- Link to the new CSS file -->
 </head>
 
 <body>
     <div id="map"></div>
     <button class="custom-button" onclick="customButtonClick()">
-        <i class="fas fa-info-circle"></i> Custom Button
+        🔧settings
     </button>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Set Destinations</h2> <!-- Add the title here -->
+            <div class="form-group">
+                <input type="text" id="field1_label" name="field1_label">
+                <input type="text" id="field1_lat" name="field1_lat">
+                <input type="text" id="field1_lng" name="field1_lng">
+            </div>
+            <div class="form-group">
+                <input type="text" id="field2_label" name="field2_label">
+                <input type="text" id="field2_lat" name="field2_lat">
+                <input type="text" id="field2_lng" name="field2_lng">
+            </div>
+            <div class="form-group">
+                <input type="text" id="field3_label" name="field3_label">
+                <input type="text" id="field3_lat" name="field3_lat">
+                <input type="text" id="field3_lng" name="field3_lng">
+            </div>
+            <div class="form-group">
+                <input type="text" id="field4_label" name="field4_label">
+                <input type="text" id="field4_lat" name="field4_lat">
+                <input type="text" id="field4_lng" name="field4_lng">
+            </div>
+            <div class="form-group">
+                <input type="text" id="field5_label" name="field5_label">
+                <input type="text" id="field5_lat" name="field5_lat">
+                <input type="text" id="field5_lng" name="field5_lng">
+            </div>
+            <div class="button-container">
+                <button onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="locations.js"></script>
-    <script>
-        // Create the map and set the initial view to center on Japan
-        var map = L.map('map').setView([36.2048, 138.2529], 5); // Centered on Japan with zoom level 5
-
-        // Add a custom tile layer with simpler colors
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        }).addTo(map);
-
-        // Add markers and labels to the map
-        locations.forEach(function (location) {
-            // Label
-            var label = L.divIcon({
-                className: 'label-div',
-                html: location.label,
-                iconAnchor: [20, 50] // Adjust the position of the label above and to the right of the marker
-            });
-            L.marker(location.coords, { icon: label }).addTo(map);
-        });
-
-        // Combine locations and invisible stops for routing
-        var waypoints = locations.map(loc => loc.coords).slice(0, 1)
-            .concat(invisibleStops.map(stop => stop.coords))
-            .concat(locations.map(loc => loc.coords).slice(1));
-
-        // Add routing control
-        L.Routing.control({
-            waypoints: waypoints.map(loc => L.latLng(loc)),
-            routeWhileDragging: false,
-            addWaypoints: false,
-            draggableWaypoints: false,
-            createMarker: function (i, waypoint) {
-                if (invisibleStops.some(stop => stop.coords[0] === waypoint.latLng.lat && stop.coords[1] === waypoint.latLng.lng)) {
-                    return null; // Do not create marker for invisible stops
-                }
-                return L.marker(waypoint.latLng, {
-                    icon: L.divIcon({
-                        className: 'custom-div-icon'
-                    })
-                });
-            },
-            lineOptions: {
-                styles: [{ color: '#FF69B4', weight: 4, dashArray: '10, 10' }] // Dashed line
-            },
-            show: false // Hide the navigation panel
-        }).addTo(map);
-
-        // Add landmarks without labels
-        landmarks.forEach(function (landmark) {
-            L.marker(landmark.coords, {
-                icon: L.divIcon({
-                    className: 'emoji-div-icon',
-                    html: landmark.emoji
-                })
-            }).addTo(map);
-        });
-
-        // Custom button click handler
-        function customButtonClick() {
-            alert('Custom button clicked!');
-        }
-
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
