@@ -1,5 +1,5 @@
 #map {
-    height: 600px;
+    height: 500px;
     width: 100%;
     max-width: 90%;
     margin: 0 auto;
@@ -46,24 +46,16 @@
     background-color: white;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    display: none; /* Initially hidden */
-    z-index: 1000; /* Ensure it's on top */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    display: none;
+    /* Initially hidden */
+    z-index: 1000;
+    /* Ensure it's on top */
     font-family: 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif;
 }
 
 .leaflet-popup-content-wrapper {
     font-family: 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif;
-}
-
-.emoji-div-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    width: 32px;
-    height: 32px;
-    font-size: 32px;
 }
 
 .leaflet-control-container .leaflet-control-zoom {
@@ -88,13 +80,14 @@
     right: 10px;
     padding: 10px;
     background-color: white;
-    color: hotpink;
+    color: black;
     font-size: 14px;
     font-weight: bold;
     z-index: 1000;
     font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add this line for shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Add this line for shadow */
 }
 
 .leaflet-tooltip {
@@ -103,4 +96,44 @@
 
 .leaflet-control-attribution {
     display: none !important;
+}
+
+.location-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    height: 22px;
+    height: 22px;
+    height: 22px;
+}
+
+.landmark-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+.custom-div-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+}
+
+.emoji-div-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
 }

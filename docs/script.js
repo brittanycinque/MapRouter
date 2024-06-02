@@ -1,12 +1,12 @@
 // Create the map and set the initial view to center on Japan
-var map = L.map('map', { 
+var map = L.map('map', {
     zoomAnimation: false,
     dragging: true, // Allow dragging
     scrollWheelZoom: true, // Disable scroll wheel zoom
     doubleClickZoom: true, // Disable double-click zoom
     keyboard: false, // Disable keyboard navigation
     tap: true // Disable tap navigation
-}).setView([36.2048, 138.2529], 6); // Adjust the coordinates to better center the map
+}).setView([36.2048, 138.2529], 2); // Adjust the coordinates to better center the map
 
 // Define the bounds to restrict the map view
 var bounds = L.latLngBounds([
@@ -15,7 +15,7 @@ var bounds = L.latLngBounds([
 ]);
 
 // Snap back to the initial position when panning ends without affecting the zoom level
-map.on('dragend', function() {
+map.on('dragend', function () {
     var currentZoom = map.getZoom();
     map.setView([36.2048, 138.2529], currentZoom, { animate: true }); // Keep the current zoom level
 });
@@ -26,11 +26,12 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 }).addTo(map);
 
 // Add markers, labels, and popups to the map
+// Add markers, labels, and popups to the map
 function addMarkersAndLabels() {
     locations.forEach(function (location) {
-        var marker = L.marker(location.coords, { 
+        var marker = L.marker(location.coords, {
             icon: L.divIcon({
-                className: 'custom-div-icon',
+                className: location.class,
                 html: location.emoji
             })
         }).addTo(map);
@@ -41,7 +42,7 @@ function addMarkersAndLabels() {
     landmarks.forEach(function (landmark) {
         L.marker(landmark.coords, {
             icon: L.divIcon({
-                className: 'emoji-div-icon',
+                className: landmark.class,
                 html: landmark.emoji
             })
         }).addTo(map);
@@ -81,7 +82,7 @@ L.Routing.control({
         });
     },
     lineOptions: {
-        styles: [{ color: '#FF69B4', weight: 4, dashArray: '10, 10' }]
+        styles: [{ color: 'red', weight: 3, dashArray: '10, 10' }]
     },
     show: false
 }).addTo(map);
@@ -98,11 +99,11 @@ function updateTextDisplay(e) {
     var latlng = e.latlng;
     var closestPoint = null;
     var closestDistance = Infinity;
-    
+
     // Combine locations and landmarks for proximity check
     var points = locations.concat(landmarks);
 
-    points.forEach(function(point) {
+    points.forEach(function (point) {
         var distance = latlng.distanceTo(L.latLng(point.coords));
         if (distance < closestDistance) {
             closestDistance = distance;

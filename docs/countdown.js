@@ -16,7 +16,7 @@ function updateCountdown() {
 
     var hours = Math.floor(timeDifference / (1000 * 60 * 60));
 
-    document.getElementById('countdown').innerHTML = "Still " + months + " months, " + days + " days and " + hours + " hours to go!";
+    document.getElementById('countdown').innerHTML = "" + months + " months, " + days + " days and " + hours + " hours to go!";
 }
 
 // Update the countdown every hour

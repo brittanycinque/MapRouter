@@ -1,25 +1,25 @@
 // Define the locations with latitude, longitude, labels, and nights
 var locations = [
-    { coords: [35.6602231, 139.7019877], name: 'Tokyo', hotel: 'Tokyo Rei Hotel', nights: 5, emoji: "📍" },
-    { coords: [36.5748, 139.8836], name: 'Nikko', hotel: 'unknown', nights: 2, emoji: "📍" },
-    { coords: [36.1468, 137.2529], name: 'Takayama', hotel: 'unknown', nights: 2, emoji: "📍" },
-    { coords: [35.0116, 135.7681], name: 'Kyoto', hotel: 'unknown', nights: 4, emoji: "📍" },
-    { coords: [34.6937, 135.5023], name: 'Osaka', hotel: 'unknown', nights: 4, emoji: "📍" },
-    { coords: [35.6895, 139.6917], name: 'Tokyo', hotel: 'unknown', nights: 5, emoji: "📍" }
+    { coords: [35.658034, 139.701636], class: "location-icon", name: 'Tokyo (Shibuya)', hotel: 'Tokyo Rei Hotel', nights: 4, emoji: "🏨" }, // Adjusted
+    { coords: [36.561325, 136.656206], class: "location-icon", name: 'Kanazawa', hotel: 'Soki Kanazawa', nights: 2, emoji: "🏨" }, // Adjusted
+    { coords: [36.146783, 137.251999], class: "location-icon", name: 'Takayama', hotel: 'Hut in Takayama', nights: 1, emoji: "🏨" }, // Adjusted
+    { coords: [35.011564, 135.768149], class: "location-icon", name: 'Kyoto', hotel: 'Hotel Ms Kyoto', nights: 3, emoji: "🏨" }, // Verified
+    { coords: [34.693737, 135.502165], class: "location-icon", name: 'Osaka', hotel: 'unknown', nights: 3, emoji: "🏨" }, // Verified
+    { coords: [35.191075, 139.028509], class: "location-icon", name: 'Hakone', hotel: 'unknown', nights: 2, emoji: "🏨" }, // Adjusted
+    { coords: [35.443707, 139.638031], class: "location-icon", name: 'Yokohama', hotel: 'unknown', nights: 6, emoji: "🏨" } // Updated to Yokohama
 ];
 
 // Define the landmarks with latitude, longitude, and emojis
 var landmarks = [
-    { coords: [35.3606, 138.7274], name: "Mt Fuji", emoji: '🗻' }, // Mt. Fuji (Hakone)
-    { coords: [36.7908146, 139.6973346], name: "Edo Wonderland Nikko Edomura", emoji: '🏯' },  
-    { coords: [36.6760561, 137.915335], name: "Ashidaki Station", emoji: '🚇' },
-    { coords: [35.7130602, 139.5602498], name: "Meidaimae Station", emoji: '🚅' },
+    { coords: [35.6585805, 139.7454329], class: "landmark-icon", name: "Tokyo Tower", emoji: '🗼' }, // Corrected
+    { coords: [36.1572, 137.6006], class: "landmark-icon", name: "Mt Yake", emoji: '🌋' }, // Corrected
+    { coords: [35.360555, 138.727778], class: "landmark-icon", name: "Mt Fuji", emoji: '🗻' }, // Verified
+    { coords: [35.549393, 139.779839], class: "landmark-icon", name: "Haneda Airport", emoji: '✈️' } // Adjusted    
 ];
 
 // Define the invisible stops
 var invisibleStops = [
-    { coords: [35.8586447, 139.9301584], emoji: "" }, // Example invisible stop between Tokyo and Nikko
-    { coords: [35.8586447, 139.9301584], emoji: "" } // Example invisible stop between Tokyo and Nikko
+    //
 ];
 
 // Function to generate popup content for a location
