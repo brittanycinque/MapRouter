@@ -1,5 +1,26 @@
 // Create the map and set the initial view to center on Japan
-var map = L.map('map', { zoomControl: false, zoomAnimation: false }).setView([36.0048, 148.0529], 8); // Centered on Japan with zoom level 8
+var map = L.map('map', { 
+    zoomControl: false, 
+    zoomAnimation: false,
+    dragging: false, // Disable dragging
+    scrollWheelZoom: false, // Disable scroll wheel zoom
+    doubleClickZoom: false, // Disable double-click zoom
+    boxZoom: false, // Disable box zoom
+    keyboard: false, // Disable keyboard navigation
+    tap: false // Disable tap navigation
+}).setView([36.0048, 148.0529], 8);
+
+// Define the bounds to restrict the map view
+var bounds = L.latLngBounds([
+    [20, 120], // Southwest corner (approximate)
+    [45, 150]  // Northeast corner (approximate)
+]);
+
+// Apply the bounds to the map
+map.setMaxBounds(bounds);
+map.on('drag', function() {
+    map.panInsideBounds(bounds, { animate: false });
+});
 
 // Add a custom tile layer with simpler colors
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
@@ -12,13 +33,12 @@ function addMarkersAndLabels() {
         var label = L.divIcon({
             className: 'label-div',
             html: location.label,
-            iconAnchor: [50, 40] // Adjust the position of the label above and to the right of the marker
+            iconAnchor: [50, 40]
         });
         var marker = L.marker(location.coords, { icon: label }).addTo(map);
         marker.bindPopup(`<b>${location.label}</b><br>${location.nights} days`);
     });
 
-    // Add landmarks without labels and popups
     landmarks.forEach(function (landmark) {
         L.marker(landmark.coords, {
             icon: L.divIcon({
@@ -31,12 +51,10 @@ function addMarkersAndLabels() {
 
 addMarkersAndLabels();
 
-// Combine locations and invisible stops for routing
 var waypoints = locations.map(loc => loc.coords).slice(0, 1)
     .concat(invisibleStops.map(stop => stop.coords))
     .concat(locations.map(loc => loc.coords).slice(1));
 
-// Add routing control
 L.Routing.control({
     waypoints: waypoints.map(loc => L.latLng(loc)),
     routeWhileDragging: false,
@@ -44,7 +62,7 @@ L.Routing.control({
     draggableWaypoints: false,
     createMarker: function (i, waypoint) {
         if (invisibleStops.some(stop => stop.coords[0] === waypoint.latLng.lat && stop.coords[1] === waypoint.latLng.lng)) {
-            return null; // Do not create marker for invisible stops
+            return null;
         }
         return L.marker(waypoint.latLng, {
             icon: L.divIcon({
@@ -53,31 +71,34 @@ L.Routing.control({
         });
     },
     lineOptions: {
-        styles: [{ color: '#FF69B4', weight: 4, dashArray: '10, 10' }] // Dashed line
+        styles: [{ color: '#FF69B4', weight: 4, dashArray: '10, 10' }]
     },
-    show: false // Hide the navigation panel
+    show: false
 }).addTo(map);
 
-// Adding the zoom control with empty text to hide the buttons
 L.control.zoom({ position: 'topright', zoomInText: '', zoomOutText: '' }).addTo(map);
 
-// Countdown Timer
 function updateCountdown() {
-    var targetDate = new Date('2024-10-18T00:00:00'); // Set your target date here
+    var targetDate = new Date('2024-10-18T00:00:00');
     var now = new Date();
     var timeDifference = targetDate - now;
 
-    var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-    document.getElementById('countdown').innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
     if (timeDifference < 0) {
         document.getElementById('countdown').innerHTML = "EXPIRED";
+        return;
     }
+
+    var months = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 30));
+    timeDifference -= months * (1000 * 60 * 60 * 24 * 30);
+
+    var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    timeDifference -= days * (1000 * 60 * 60 * 24);
+
+    var hours = Math.floor(timeDifference / (1000 * 60 * 60));
+
+    document.getElementById('countdown').innerHTML = "Still " + months + " months, " + days + " days and " + hours + " hours to go!";
 }
 
-// Update the countdown every second
-setInterval(updateCountdown, 1000);
+// Update the countdown every hour
+setInterval(updateCountdown, 3600000);
+updateCountdown(); // Initial call to set the timer immediately
